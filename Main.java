@@ -26,21 +26,21 @@ public class Main {
         while (true){
             String input = sc.nextLine();
             String[] words = input.split(" ");
-            switch (words[0]){
+            switch (words[0]) {
                 case "S":
                 case "Student":
-                    if (words.length < 2){
+                    if (words.length < 2) {
                         System.out.println("Invalid format S[tudent] <lastname> [B[us]]");
                         continue;
                     }
 
                     Student student = getStudent(words[1]);
-                    if (student == null){
+                    if (student == null) {
                         System.out.println("Student not found");
                         continue;
                     }
 
-                    if (words.length < 3){
+                    if (words.length < 3) {
                         System.out.printf("Student: %s %s - Grade %d - Classroom %d - Teacher %s %s\n",
                                 student.getFirstName(),
                                 student.getLastName(),
@@ -50,7 +50,7 @@ public class Main {
                                 student.getTeacher().getLastName());
                         continue;
                     }
-                    if (words.length == 3 && (words[2].equals("B") || words[2].equals("Bus"))){
+                    if (words.length == 3 && (words[2].equals("B") || words[2].equals("Bus"))) {
                         System.out.printf("Student: %s %s - Bus Route: %d\n", student.getFirstName(),
                                 student.getLastName(), student.getBus());
                         continue;
@@ -66,7 +66,22 @@ public class Main {
                     continue;
                 case "G":
                 case "Grade":
-                    System.out.println("Grade");
+                    if (words.length < 2) {
+                        System.out.println("Invalid format G[rade] <grade>");
+                        continue;
+                    }
+                    try {
+                        int grade = Integer.parseInt(words[1]);
+                        students.stream().filter(s -> s.getGrade() == grade).sorted((u1, u2) -> {
+                            if (u1.getLastName().equals(u2.getLastName())) {
+                                return u1.getFirstName().compareTo(u2.getFirstName());
+                            }
+                            return u1.getLastName().compareTo(u2.getLastName());
+                        }).forEach(s -> System.out.printf("%s %s\n", s.getFirstName(), s.getLastName()));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid format G[rade] <grade>");
+                    }
+
                     continue;
                 case "A":
                 case "Average":
