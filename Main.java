@@ -73,7 +73,19 @@ public class Main {
                     continue;
                 case "B":
                 case "Bus":
-                    System.out.println("Bus");
+                    if (words.length < 2) {
+                        System.out.println("Invalid format B[us] <number>");
+                        continue;
+                    }
+                    try {
+                        int bus = Integer.parseInt(words[1]);
+                        students.stream()
+                                .filter(s -> s.getBus() == bus)
+                                .forEach(s -> System.out.printf("%s %s - Grade: %d - Classroom: %s\n",
+                                        s.getFirstName(), s.getLastName(), s.getGrade(), s.getClassroom()));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid format B[us] <number>");
+                    }
                     continue;
                 case "G":
                 case "Grade":
