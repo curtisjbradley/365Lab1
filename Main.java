@@ -1,8 +1,27 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    private static final ArrayList<Student> students = new ArrayList<>();
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner studentScanner = new Scanner(new File("students.txt"));
+
+        while (studentScanner.hasNext()) {
+            String[] studentArgs = studentScanner.nextLine().split(",");
+            String lastName = studentArgs[0];
+            String firstName = studentArgs[1];
+            int age = Integer.parseInt(studentArgs[2]);
+            int classroom = Integer.parseInt(studentArgs[3]);
+            int bus = Integer.parseInt(studentArgs[4]);
+            float gpa = Float.parseFloat(studentArgs[5]);
+            String teacherLast = studentArgs[6];
+            String teacherFirst = studentArgs[7];
+            students.add(new Student(firstName, lastName, age, classroom, bus, gpa, teacherFirst, teacherLast));
+        }
+
         Scanner sc = new Scanner(System.in);
         while (true){
             String input = sc.next();
@@ -42,8 +61,13 @@ public class Main {
                     continue;
                 case "I":
                 case "Info":
-                    System.out.println("Info");
+                    for (Student student : students) {
+                        System.out.println(student);
+                    }
                     continue;
+                case "Q":
+                case "Quit":
+                    return;
                 default:
                     System.out.println("Invalid Command");
             }
