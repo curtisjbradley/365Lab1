@@ -24,7 +24,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         while (true){
-            String input = sc.next();
+            String input = sc.nextLine();
             String[] words = input.split(" ");
             switch (words[0]){
                 case "S":
@@ -57,7 +57,22 @@ public class Main {
                     continue;
                 case "A":
                 case "Average":
-                    System.out.println("Average");
+                    if (words.length < 2){
+                        System.out.println("Invalid format: Average <grade>");
+                        continue;
+                    }
+
+                    try {
+                        int grade = Integer.parseInt(words[1]);
+                        double average = getAverage(grade);
+                        if (Double.isNaN(average)){
+                            System.out.println("No students in grade");
+                            continue;
+                        }
+                        System.out.printf("Average for grade %d is %.2f\n", grade, average);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid format: Average <grade>");
+                    }
                     continue;
                 case "I":
                 case "Info":
@@ -72,5 +87,10 @@ public class Main {
                     System.out.println("Invalid Command");
             }
         }
+    }
+
+    public static double getAverage(int grade){
+        return students.stream().filter(student -> student.getGrade() == grade)
+                        .mapToDouble(Student::getGPA).average().orElse(Double.NaN);
     }
 }
