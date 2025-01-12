@@ -76,9 +76,10 @@ public class Main {
                     continue;
                 case "I":
                 case "Info":
-                    for (Student student : students) {
-                        System.out.println(student);
-                    }
+                    students.stream().mapToInt(Student::getGrade).distinct().sorted().forEach(grade -> {
+                        long studentsInGrade = students.stream().filter(student -> student.getGrade() == grade).count();
+                        System.out.printf("%d: %d\n", grade, studentsInGrade);
+                    });
                     continue;
                 case "Q":
                 case "Quit":
