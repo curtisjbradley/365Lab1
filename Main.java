@@ -29,17 +29,30 @@ public class Main {
             switch (words[0]){
                 case "S":
                 case "Student":
-                    System.out.println("Student");
                     if (words.length < 2){
                         System.out.println("Invalid format S[tudent] <lastname> [B[us]]");
                         continue;
                     }
+
+                    Student student = getStudent(words[1]);
+                    if (student == null){
+                        System.out.println("Student not found");
+                        continue;
+                    }
+
                     if (words.length < 3){
-                        //Student [args]
+                        System.out.printf("Student: %s %s - Grade %d - Classroom %d - Teacher %s %s\n",
+                                student.getFirstName(),
+                                student.getLastName(),
+                                student.getGrade(),
+                                student.getClassroom(),
+                                student.getTeacher().getFirstName(),
+                                student.getTeacher().getLastName());
                         continue;
                     }
                     if (words.length == 3 && (words[2].equals("B") || words[2].equals("Bus"))){
-                       //Student  [args]
+                        System.out.printf("Student: %s %s - Bus Route: %d\n", student.getFirstName(),
+                                student.getLastName(), student.getBus());
                         continue;
                     }
                     continue;
@@ -77,7 +90,7 @@ public class Main {
                 case "I":
                 case "Info":
                     students.stream().mapToInt(Student::getGrade).distinct().sorted().forEach(grade -> {
-                        long studentsInGrade = students.stream().filter(student -> student.getGrade() == grade).count();
+                        long studentsInGrade = students.stream().filter(s -> s.getGrade() == grade).count();
                         System.out.printf("%d: %d\n", grade, studentsInGrade);
                     });
                     continue;
@@ -94,4 +107,10 @@ public class Main {
         return students.stream().filter(student -> student.getGrade() == grade)
                         .mapToDouble(Student::getGPA).average().orElse(Double.NaN);
     }
+    public static Student getStudent(String lastName) {
+        return students.stream().filter(student -> student.getLastName().equalsIgnoreCase(lastName))
+                .findFirst().orElse(null);
+    }
+
+
 }
