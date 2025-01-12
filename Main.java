@@ -21,6 +21,12 @@ public class Main {
             String teacherFirst = studentArgs[7];
             students.add(new Student(firstName, lastName, age, classroom, bus, gpa, teacherFirst, teacherLast));
         }
+        students.sort((u1,u2) -> {
+            if (u1.getLastName().equals(u2.getLastName())) {
+                return u1.getFirstName().compareTo(u2.getFirstName());
+            }
+            return u1.getLastName().compareTo(u2.getLastName());
+        });
 
         Scanner sc = new Scanner(System.in);
         while (true){
@@ -58,7 +64,12 @@ public class Main {
                     continue;
                 case "T":
                 case "Teacher":
-                    System.out.println("Teacher");
+                    if (words.length < 2) {
+                        System.out.println("Invalid format T[eacher] <lastname>");
+                        continue;
+                    }
+                    students.stream().filter(s -> s.getTeacher().getLastName().equalsIgnoreCase(words[1]))
+                            .forEach(s -> System.out.printf("%s %s\n", s.getFirstName(), s.getLastName()));
                     continue;
                 case "B":
                 case "Bus":
@@ -72,12 +83,8 @@ public class Main {
                     }
                     try {
                         int grade = Integer.parseInt(words[1]);
-                        students.stream().filter(s -> s.getGrade() == grade).sorted((u1, u2) -> {
-                            if (u1.getLastName().equals(u2.getLastName())) {
-                                return u1.getFirstName().compareTo(u2.getFirstName());
-                            }
-                            return u1.getLastName().compareTo(u2.getLastName());
-                        }).forEach(s -> System.out.printf("%s %s\n", s.getFirstName(), s.getLastName()));
+                        students.stream().filter(s -> s.getGrade() == grade)
+                                .forEach(s -> System.out.printf("%s %s\n", s.getFirstName(), s.getLastName()));
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid format G[rade] <grade>");
                     }
