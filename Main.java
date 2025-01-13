@@ -1,11 +1,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
 
     private static final ArrayList<Student> students = new ArrayList<>();
+
     public static void main(String[] args) throws FileNotFoundException {
         Scanner studentScanner = new Scanner(new File("students.txt"));
 
@@ -21,7 +23,7 @@ public class Main {
             String teacherFirst = studentArgs[7];
             students.add(new Student(firstName, lastName, age, classroom, bus, gpa, teacherFirst, teacherLast));
         }
-        students.sort((u1,u2) -> {
+        students.sort((u1, u2) -> {
             if (u1.getLastName().equals(u2.getLastName())) {
                 return u1.getFirstName().compareTo(u2.getFirstName());
             }
@@ -29,7 +31,7 @@ public class Main {
         });
 
         Scanner sc = new Scanner(System.in);
-        while (true){
+        while (true) {
             String input = sc.nextLine();
             String[] words = input.split(" ");
             switch (words[0]) {
@@ -90,21 +92,44 @@ public class Main {
                 case "G":
                 case "Grade":
                     if (words.length < 2) {
-                        System.out.println("Invalid format G[rade] <grade>");
+                        System.out.println("Invalid format G[rade] <grade> [H[igh] or L[ow]]");
                         continue;
                     }
                     try {
                         int grade = Integer.parseInt(words[1]);
-                        students.stream().filter(s -> s.getGrade() == grade)
-                                .forEach(s -> System.out.printf("%s %s\n", s.getFirstName(), s.getLastName()));
+                        if (words.length == 2) {
+                            students.stream().filter(s -> s.getGrade() == grade)
+                                    .forEach(s -> System.out.printf("%s %s\n", s.getFirstName(), s.getLastName()));
+
+                            continue;
+                        }
+                        if (words.length == 3) {
+                            Student queriedStudent = null;
+                            if (words[2].equals("H") || words[2].equals("High")) {
+                                queriedStudent = students.stream().filter(s -> s.getGrade() == grade)
+                                        .max(Comparator.comparingDouble(Student::getGPA))
+                                        .orElse(null);
+                            }
+                            if (words[2].equals("L") || words[2].equals("Low")) {
+                                queriedStudent = students.stream().filter(s -> s.getGrade() == grade)
+                                        .min(Comparator.comparingDouble(Student::getGPA))
+                                        .orElse(null);
+                            }
+                            if (queriedStudent != null) {
+                                System.out.printf("%s %s - GPA: %.2f - Bus Route: %d - Teacher: %s %s\n",
+                                        queriedStudent.getFirstName(), queriedStudent.getLastName(),
+                                        queriedStudent.getGPA(), queriedStudent.getBus(),
+                                        queriedStudent.getTeacher().getFirstName(), queriedStudent.getTeacher().getLastName());
+                            }
+                            continue;
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid format G[rade] <grade>");
                     }
-
                     continue;
                 case "A":
                 case "Average":
-                    if (words.length < 2){
+                    if (words.length < 2) {
                         System.out.println("Invalid format: Average <grade>");
                         continue;
                     }
@@ -112,7 +137,7 @@ public class Main {
                     try {
                         int grade = Integer.parseInt(words[1]);
                         double average = getAverage(grade);
-                        if (Double.isNaN(average)){
+                        if (Double.isNaN(average)) {
                             System.out.println("No students in grade");
                             continue;
                         }
@@ -137,10 +162,11 @@ public class Main {
         }
     }
 
-    public static double getAverage(int grade){
+    public static double getAverage(int grade) {
         return students.stream().filter(student -> student.getGrade() == grade)
-                        .mapToDouble(Student::getGPA).average().orElse(Double.NaN);
+                .mapToDouble(Student::getGPA).average().orElse(Double.NaN);
     }
+
     public static Student getStudent(String lastName) {
         return students.stream().filter(student -> student.getLastName().equalsIgnoreCase(lastName))
                 .findFirst().orElse(null);
