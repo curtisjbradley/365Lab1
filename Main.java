@@ -30,6 +30,8 @@ public class Main {
             return u1.getLastName().compareTo(u2.getLastName());
         });
 
+        printCommands();
+
         Scanner sc = new Scanner(System.in);
         while (true) {
             String input = sc.nextLine();
@@ -38,13 +40,12 @@ public class Main {
                 case "S":
                 case "Student":
                     if (words.length < 2) {
-                        System.out.println("Invalid format S[tudent] <lastname> [B[us]]");
+                        printCommands();
                         continue;
                     }
 
                     Student student = getStudent(words[1]);
                     if (student == null) {
-                        System.out.println("Student not found");
                         continue;
                     }
 
@@ -67,7 +68,7 @@ public class Main {
                 case "T":
                 case "Teacher":
                     if (words.length < 2) {
-                        System.out.println("Invalid format T[eacher] <lastname>");
+                        printCommands();
                         continue;
                     }
                     students.stream().filter(s -> s.getTeacher().getLastName().equalsIgnoreCase(words[1]))
@@ -76,7 +77,7 @@ public class Main {
                 case "B":
                 case "Bus":
                     if (words.length < 2) {
-                        System.out.println("Invalid format B[us] <number>");
+                        printCommands();
                         continue;
                     }
                     try {
@@ -86,13 +87,13 @@ public class Main {
                                 .forEach(s -> System.out.printf("%s %s - Grade: %d - Classroom: %s\n",
                                         s.getFirstName(), s.getLastName(), s.getGrade(), s.getClassroom()));
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid format B[us] <number>");
+                        printCommands();
                     }
                     continue;
                 case "G":
                 case "Grade":
                     if (words.length < 2) {
-                        System.out.println("Invalid format G[rade] <grade> [H[igh] or L[ow]]");
+                        printCommands();
                         continue;
                     }
                     try {
@@ -124,13 +125,13 @@ public class Main {
                             continue;
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid format G[rade] <grade>");
+                        printCommands();
                     }
                     continue;
                 case "A":
                 case "Average":
                     if (words.length < 2) {
-                        System.out.println("Invalid format: Average <grade>");
+                        printCommands();
                         continue;
                     }
 
@@ -138,12 +139,11 @@ public class Main {
                         int grade = Integer.parseInt(words[1]);
                         double average = getAverage(grade);
                         if (Double.isNaN(average)) {
-                            System.out.println("No students in grade");
                             continue;
                         }
                         System.out.printf("Average for grade %d is %.2f\n", grade, average);
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid format: Average <grade>");
+                        printCommands();
                     }
                     continue;
                 case "I":
@@ -157,11 +157,20 @@ public class Main {
                 case "Quit":
                     return;
                 default:
-                    System.out.println("Invalid Command");
+                    printCommands();
             }
         }
     }
 
+    public static void printCommands() {
+        System.out.println("Enter a command:");
+        System.out.println("S[tudent] <lastname> [B[us]]");
+        System.out.println("B[us] <number>");
+        System.out.println("G[rade] <number> [H[igh]|L[ow]]");
+        System.out.println("A[verage]: <number>");
+        System.out.println("I[nfo]");
+        System.out.println("Q[uit]");
+    }
     public static double getAverage(int grade) {
         return students.stream().filter(student -> student.getGrade() == grade)
                 .mapToDouble(Student::getGPA).average().orElse(Double.NaN);
