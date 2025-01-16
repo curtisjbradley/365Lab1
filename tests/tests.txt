@@ -1,0 +1,12 @@
+S Cookus #R4
+S cookus B #R5
+S Null #E1
+B 52 #R8
+G 3 #R7
+G 4 L #R9
+G 5 H #R9 & E1
+A 3 #R10
+A 5 #R10 & E1
+I #R11
+T Fafard #R6
+Q

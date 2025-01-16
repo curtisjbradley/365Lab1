@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,7 +10,12 @@ public class Main {
     private static final ArrayList<Student> students = new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner studentScanner = new Scanner(new File("students.txt"));
+        File f = new File("students.txt");
+        if (!f.exists()){
+            System.out.println("students.txt not found");
+            return;
+        }
+        Scanner studentScanner = new Scanner(f);
 
         while (studentScanner.hasNext()) {
             String[] studentArgs = studentScanner.nextLine().split(",");

@@ -1,0 +1,58 @@
+Enter a command:
+S[tudent] <lastname> [B[us]]
+B[us] <number>
+G[rade] <number> [H[igh]|L[ow]]
+A[verage]: <number>
+I[nfo]
+Q[uit]
+
+#R2 Prompt
+
+
+Student: XUAN COOKUS - Grade 3 - Classroom 107 - Teacher ROCIO FAFARD #R4
+
+
+Student: XUAN COOKUS - Bus Route: 52 #R5
+
+#Empty E1
+
+DIMPLE CORONADO - Grade: 6 - Classroom: 102
+TORY EARLY - Grade: 3 - Classroom: 107
+SHANTE ELHADDAD - Grade: 3 - Classroom: 107
+DEVIN IMMERMAN - Grade: 4 - Classroom: 105
+ROSETTA KEMERER - Grade: 6 - Classroom: 102
+STAN OBREIN - Grade: 6 - Classroom: 111
+DIEDRA SARAO - Grade: 2 - Classroom: 108 #R8
+
+HYE BRODERSEN
+MANIE CIGANEK
+XUAN COOKUS
+TOMAS COVINGTON
+TORY EARLY
+SHANTE ELHADDAD
+LELA LINHART
+SHARRI SWEDLUND
+GRACE THEUNISSEN #R7
+
+
+DEVIN IMMERMAN - GPA: 2.78 - Bus Route: 52 - Teacher: JED HANTZ #R9
+
+#Empty R9 & E1
+
+Average for grade 3 is 3.05 #R10
+
+#Empty R10 & E1
+
+1: 2
+2: 13
+3: 9
+4: 15
+6: 21 #R11
+
+MANIE CIGANEK
+XUAN COOKUS
+TOMAS COVINGTON
+TORY EARLY
+SHANTE ELHADDAD
+LELA LINHART
+SHARRI SWEDLUND #R6
