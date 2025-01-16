@@ -30,6 +30,8 @@ public class Main {
             return u1.getLastName().compareTo(u2.getLastName());
         });
 
+        studentScanner.close();
+
         printCommands();
 
         Scanner sc = new Scanner(System.in);
